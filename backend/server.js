@@ -13,10 +13,12 @@ const app = express();
 
 const httpServer = createServer(app);
 
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
+    origin: frontendUrl,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   },
 });
@@ -29,7 +31,7 @@ app.set('io', io);
 
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: frontendUrl, credentials: true }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
